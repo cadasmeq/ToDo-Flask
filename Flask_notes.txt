@@ -12,3 +12,4 @@ Para correr la app se debe prender un servidor para correr la app en el browser
 flask run
 export FLASK_APP=main.py	-> linux
 set FLASK_APP=main.py	-> win
+set FLASK_DEBUG=1 -> Enable debug 
