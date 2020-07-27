@@ -13,3 +13,12 @@ flask run
 export FLASK_APP=main.py	-> linux
 set FLASK_APP=main.py	-> win
 set FLASK_DEBUG=1 -> Enable debug 
+
+Templates Jinja 2 = por defecto estan en /templates
+
+Estructuras de Control:
+se inicializan del siguiente modo
+{% if user_ip %}
+{% else %}
+{% endif %} 	-> se debe indicar donde termina
+
