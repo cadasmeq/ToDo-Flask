@@ -1,0 +1,14 @@
+CREATE A VIRTUAL ENVIRONTMENT
+- virtualenv venv --python=python3.7	-> create a virtual env
+- source venv/bin/activate	-> activate venv (linux)
+- venv\scripts\activate		-> activate venv (windows)
+- deactivate	-> deactivate duh
+
+INSTALL FLASK
+pip install flask
+pip freeze	-> show dependencies installed
+
+Para correr la app se debe prender un servidor para correr la app en el browser
+flask run
+export FLASK_APP=main.py	-> linux
+set FLASK_APP=main.py	-> win
