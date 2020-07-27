@@ -1,0 +1,8 @@
+CREATE A VIRTUAL ENVIRONTMENT
+- virtualenv venv --python=python2.7	-> create a virtual env
+- source venv/bin/activate	-> activate venv
+- deactivate	-> deactivate duh
+
+INSTALL FLASK
+pip install flask
+pip freeze	-> show dependencies installed 
