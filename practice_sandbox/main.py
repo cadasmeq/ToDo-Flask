@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, make_response, template_rendered
+from flask import Flask, request, redirect, make_response, render_template
 
 app = Flask(__name__)
 
@@ -16,7 +16,7 @@ def home():
 def myIP():
     ip_user = request.cookies.get('ip_user')
     
-    return template_rendered('myip.html', ip_user)
+    return render_template('myip.html', ip_user=ip_user)
 
 # NOTAS
 # Se declará el nombre de la app
