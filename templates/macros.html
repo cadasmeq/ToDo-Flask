@@ -1,0 +1,15 @@
+{% macro render_todos(todo) %}
+    <li> {{ todo }} </li>
+{% endmacro %}
+
+{% macro init_msg(check) %}
+    {% if check %}
+        <h1>H3ll0 W0rld!;</h1>
+    {% else %}
+        <h1>Welcome!</h1>
+    {% endif %}
+{% endmacro%}
+
+
+
+

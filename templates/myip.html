@@ -1,15 +1,40 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
 
 <head>
-    <title>My IP</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <title>
+        {% block title %}
+        {{ super() }}
+        My IPs
+        {% endblock %}
+    </title>
+  
 </head>
 <body>
-    {% if check %}
-    <h1>Hello World!;</h1>
-    {% endif %}
+    {% block content %}
 
-    {% for i in range(top) %}
-    <p>Tu Dirección IP es: {{ ip_user }}</p>
-    {% endfor %}
+        {{ macros.init_msg(check) }}
+        
+        <h2>Tu Dirección IP es: {{ ip_user }}</h2>
+        <h2>To Do:</h2>
+
+        <ul>
+            {% for todo in todos %}
+            {{ macros.render_todos(todo) }}
+            {% endfor %}
+        </ul>
+            
+    {% endblock %}
 </body>
 
+
+
+<!--
+    - se crea archivo base.htrml que contendrá información por defecto del sitio.
+    - Se extiende la base.html a myip.html.
+    # Extender parece ser una manera de incorporar información preliminar a un template.
+    - Se extinde base.html a myip.html.
+    - Se generan blockes para <title> personalizado.
+    - se mueve css a plantilla base.html.
+    - Se crean Macros y se mueven algunas funcionalidades a este .html
+-->

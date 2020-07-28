@@ -2,8 +2,7 @@ from flask import Flask, request, redirect, make_response, render_template
 
 app = Flask(__name__)
 check = True
-top = 5
-
+todos = ["Limpiar la mesa", "Hacer ejercicio", "Leer un libro"]
 params = {}
 
 @app.route("/")
@@ -21,8 +20,8 @@ def myIP():
     ip_user = request.cookies.get('ip_user')
     params = {
         "ip_user":ip_user,
-        "check":check,
-        "top":top,
+        "todos":todos,
+        'check':check
     }
     
     return render_template('myip.html', **params)
@@ -38,3 +37,4 @@ def myIP():
 # en myip.html, se agregan dos estructuras de control, condicional (if) y ciclica (for) 
 # Se agregan a diccionario algunos parametros del render_template y al usar **params, se expande diccionarió completo.
 
+# Se agrega check al diccionario.
