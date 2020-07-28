@@ -4,7 +4,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
+    {% if check %}
     <h1>Hello World!;</h1>
-    <p>Tu Dirección IP es: {{ ip_user }} </p>
+    {% endif %}
+
+    {% for i in range(top) %}
+    <p>Tu Dirección IP es: {{ ip_user }}</p>
+    {% endfor %}
 </body>
 
