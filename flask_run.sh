@@ -1,4 +1,4 @@
-source ../venv/bin/activate
+source venv/bin/activate
 export FLASK_APP=main.py
 export FLASK_DEBUG=1
 echo $(flask run)

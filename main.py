@@ -5,7 +5,7 @@ check = True
 todos = ["Limpiar la mesa", "Hacer ejercicio", "Leer un libro"]
 params = {}
 
-@app.route("/")
+@app.route("/") #home?
 def home():
     remote_ip = request.remote_addr
     make_redir  = redirect("/myIP")
