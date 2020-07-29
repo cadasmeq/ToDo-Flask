@@ -26,6 +26,10 @@ def myIP():
     
     return render_template('myip.html', **params)
 
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html', error=error)
+
 # NOTAS
 # Se declará el nombre de la app
 # Utilizando request, se le pide la IP al cliente web.
