@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+<head>
+    <title>
+    {% block title %}
+    {{ super() }}
+    Ups! 404 Error
+    {% endblock %}
+    
+</title>
+    
+</head>
+<body>
+    {% block content %}
+    <h1> ERROR 404 DETECTED!</h1>
+    {% endblock %}
+</body>

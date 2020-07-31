@@ -1,0 +1,136 @@
+CREATE A VIRTUAL ENVIRONTMENT
+- virtualenv venv --python=python3.7	-> create a virtual env
+- source venv/bin/activate	-> activate venv (linux)
+- venv\scripts\activate		-> activate venv (windows)
+- deactivate	-> deactivate duh
+
+
+INSTALL FLASK
+pip install flask
+pip freeze	-> show dependencies installed
+
+
+TO RUN APP MUST TURN ON THE SERVER
+export FLASK_APP=<file.py>		-> set app file
+export FLASK_DEBUG=1			-> enable debugging 
+export FLASK_ENV=environtment		-> set environtment to "environment"
+flask run
+
+
+TEMPLATES OF FLASK USE JINJA2 FRAMEWORK
+/templates				-> default path
+
+
+CONTROL STRUCTURES
+{% if <var> %}
+{% else %}
+{% endif %}
+
+
+BLOCKS 
+{% block <id> %}			-> open a block
+{% endblock %}				-> end the block
+
+
+MACROS
+{% macro <name>(function_param) %}	-> init a macro named <name> that accept a parameter
+{% endmacro %}				-> end the macro
+
+{% import <macros_file.html> as macros %}	-> import macros file
+{{ macros.<name>(param }}			-> using macro
+
+
+CREATE APP_ROUTES			
+@app.route(path)			-> define <path> ("./" i.e.) as a route using decorator. 
+def path_function():
+	...
+
+
+ERROR HANDLING				
+@app.error("404.html")			-> define the file template for error 404.
+def 404_handler(error):
+	return ....
+	
+
+IMPORTING IMAGES
+/static/images/<image.png>		-> generate a default images container.
+{{ for_url('static', filename="images/<image>.png" }}	-> load image from path.
+
+
+INCLUDING CODE
+navbar.html				-> generate a html file that contains... html.
+{% include <navbar.html> %}		-> include navbar.html content to.
+
+
+EXTENDS TEMPLATES
+(!) Extend a template means how Jinja works with template inheritance (herencias).
+<layout.html>				-> file that contain the skeleton template.
+{% extends 'layout.html' %}		-> extends layout.html in a children template.
+
+(!) If layout and children template have the same tag, i.e. <title> and you want to use both elements,
+is necessary to call the super() function of fathers template.
+
+<title> D4C | </title>			-> layout title.
+
+<title> 
+	{% block title %}
+	{{ super() }}
+	Welcome
+	{% endblock %}
+</title>
+
+Result: <title> D4C | Welcome </title>
+
+
+APP MANANGMENT AND FUNCTIONS
+from flask import Flask
+app = Flask(__name__)			-> initialize app class Flask with file's name.
+
+from flask import make_response, redirect, request, session, render_temaplte
+
+(!) make_response: class to generate response to client
+(!) redirect: class to redirct client into a route.
+(!) request: class to get information from te client request.
+(!) session: Class to manipulated cookies in a safer way (encrypted)
+(!) render_template: This method allows render a template passing the template and params
+
+
+FLASK BOOTSTRAP
+pip install flask-bootstrap		-> install flask-bootstrap
+
+(!) Must be initialized in main app file.
+from flask_bootstrap import Bootstrap	-> import class Bootstrap
+bootstrap = Bootstrap(app)		-> Pass the app to Bootstrap Class.
+
+(!) Extending bootstrap to rest of templates.
+{% extends 'bootstrap/base.html' %}	-> extending base.html in <layout.html> i.e.
+
+FLASK FORMS WITH WTF (WHAT THE FORMS)
+pip install flask-wtf			-> installing wtf
+
+(!) Defining a Login_form with WTF
+from flask_wtf import FlaskForm		-> imporing class to use our classes
+from wtforms import StringField, PasswordField, Submitfield	-> importing form's fields.
+from wtforms.validators import DataRequired			-> imporing a data validator.
+
+Class LoginForm(FlaskFOrm):
+	username = StringField("User", validators=[DataRequired()])
+	password = PasswordField("Password", validators=[DataRequired()])
+	submit   = SubmitField("Enviar")
+
+
+(!) Declaring and using login_form
+login_form = LoginForm()
+
+{{ login_form.username }}
+{{ login_form.label }}
+
+(!) Declaring the same form using wtf
+login_form = LoginForm()			-> initializing class
+{% import 'bootstrap/wtf.hml' as wtf %}		-> imporing wtf.hml as wtf
+{{ wtf.quick_form(login_form) }}		-> using quick_form from wtf to generate the login_form
+
+
+
+
+(
