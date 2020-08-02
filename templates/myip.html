@@ -12,12 +12,9 @@
 </head>
 <body>
     {% block content %}
-
-        
         
         <h2>Tu Dirección IP es: {{ ip_user }}</h2>
         <h2>To Do:</h2>
-
         <ul>
             {% for todo in todos %}
             {{ macros.render_todos(todo) }}
