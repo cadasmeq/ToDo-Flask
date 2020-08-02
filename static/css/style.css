@@ -1,8 +1,7 @@
-body{
-    background-color: black;
-    color:white;
+html{
+    background-color: white;
+    color:black;
     font-family: verdana;
-    size: 350%;  
 }
 
 img{

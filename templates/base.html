@@ -1,15 +1,20 @@
+{% extends 'bootstrap/base.html' %}
+
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>    
+
+    
+{% block head %}
+    <title>
         {% block title %}    UAD |  {% endblock %}
     </title>  
+    
     {% include 'navbar.html'%}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-</head>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    
+{% endblock %}
 <body>
     {% block content %}
     {% endblock %}

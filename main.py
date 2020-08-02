@@ -1,6 +1,8 @@
 from flask import Flask, request, redirect, make_response, render_template
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 check = True
 todos = ["Limpiar la mesa", "Hacer ejercicio", "Leer un libro"]
 params = {}
@@ -29,6 +31,11 @@ def myIP():
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html', error=error)
+
+app.errorhandler(500)
+def server_error(error):
+    return render_template('500.html', error=error)
+
 
 # NOTAS
 # Se declará el nombre de la app

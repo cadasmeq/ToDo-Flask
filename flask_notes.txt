@@ -130,7 +130,135 @@ login_form = LoginForm()			-> initializing class
 {% import 'bootstrap/wtf.hml' as wtf %}		-> imporing wtf.hml as wtf
 {{ wtf.quick_form(login_form) }}		-> using quick_form from wtf to generate the login_form
 
+example:
+<div class="container">
+	<form action="{{ url_for('home') }}" method="POST">
+		{{ wtf.quick_form(login_form )}}
+	</form>
+</div>
+
+note: this must give an error because by default flask use GET, must be specified in app file POST method.
+
+@app.route('myip', methods=['GET', 'POST'])	-> by default route use GET Method.
+def 'function'():
+	...
+	context = {
+		...
+	}
+	if login_form.validate_on_submit():
+		username = login_form.username.data
+		session['username'] = username
+
+		return redirect(url_for('home'))
+
+	return render_template('site.html', **context)
 
 
+---> site.html
+<body>
+	{% if username %}
+		<h1> welcome: {{ username }} </h1>
+	{% endif %}
+</body>
 
-(
+Note 2: Also you can use filters to capitalize username text.
+<h1> welcome: {{ username | capitalize }} </h1>
+
+
+# FLASHES FLASK: EMERGENT MESSAGES
+from flask import flash
+
+@app.route('myip', methods=['GET', 'POST'])
+def 'function'():
+	...
+	context = {
+		...
+	}
+	if login_form.validate_on_submit():
+		username = login_form.username.data
+		session['username'] = username
+
+		flash = "¡Usuario registrado con exito!."	-> adding flash
+		return redirect(url_for('home'))
+
+
+	return render_template('site.html', **context)
+
+--> base.html		-> must be in base.html because we want flash shows in each template.
+Note: Next code is the simplest way to create an bootstrap alert.
+
+{% for message in get_flashed_message %}
+	<div class="alert alert-success alert-dismissible">
+		<button type="button" data-dismiss="alert" class="close">
+			&times; 
+			{{ message }}
+		</button>
+	</div>
+{% endfor %}
+
+Note 2: At this point, we can't close our alert because we didnt load our JS code from bootstrap.
+
+{% block content %}
+	{% block scripts %}
+	{{ super() }}		-> brings JS from father's class.
+	{% endblock %}
+{% endblock %}
+
+
+# BASIC TESTING WITH FLASK TESTING
+/requeriments.txt -> (+) flask-testing
+pip install -r requeriments.txt
+
+--> main.py
+
+import unittest
+
+@app.cli.command():
+	def test():
+		tests = unitttest.TestLoader().discover('test')
+		unittest.TextTestRunner().run(tests)
+
+>$ mkdir "./test
+>$ export FLASK_APP=main.py
+>$ flask test
+
+> 0 Tests.			-> must show 0 running test.
+
+touch ./test/test_base.py
+from flask_testing import TestCase
+from main import app
+from flask import current_app, url_for
+
+class MainTest(TestCase):
+	def create_app(self):		-> Method must return an app flask when we want to test.
+		app.config['TESTING']= True				-> check if environtment is testing.
+		app.config['wtf_csrf_enabled]=False		-> Disable the use of csrf_token in wt forms.
+
+		return app
+	
+	def test_app_exits(self):
+		self.assertIsNotNone(current_app)
+		# self.assertIsNone(current_app)
+
+>$ flask test
+> 1 Test runned.
+
+	def test_app_in_test_mode(self):
+		self.assertTrue(current_app.config['TESTING'])
+
+	def test_index_redirects(self):
+		response = self.client.get(url_for('home'))
+		self.assertRedirects(response, url_for('myip'))
+	
+	def test_hello_get(self):
+		response = self.client.get(url_for('home'))
+		self.assert200(response)
+	
+	def test_hello_post(self):
+		fake_form = {
+						'username': 'fake',
+						'password': 'fake_password'
+					}
+		response = self.client.post(url_for('hello'), data=fake_form)
+		self.assertRedirects(response, url_for('home'))
+		
