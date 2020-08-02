@@ -13,7 +13,7 @@
 <body>
     {% block content %}
 
-        {{ macros.init_msg(check) }}
+        
         
         <h2>Tu Dirección IP es: {{ ip_user }}</h2>
         <h2>To Do:</h2>
@@ -23,7 +23,8 @@
             {{ macros.render_todos(todo) }}
             {% endfor %}
         </ul>
-            
+    
+    {{ macros.init_msg(check) }}
     {% endblock %}
 
 </body>
