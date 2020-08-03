@@ -1,5 +1,7 @@
 from flask import Flask, request, redirect, make_response, render_template, session
 from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import PasswordField, SubmitField, StringField
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -7,6 +9,12 @@ check = True
 todos = ["Limpiar la mesa", "Hacer ejercicio", "Leer un libro"]
 app.config['SECRET_KEY'] = "THIS_IS_THE_KEY"
 params = {}
+
+class LoginForm(FlaskForm):
+    username = StringField('Username')
+    password = PasswordField('Password')
+    submit = SubmitField('Enviar')
+
 
 @app.route("/") #home?
 def home():
@@ -19,12 +27,14 @@ def home():
     return response
     
 
-@app.route('/myIP')
+@app.route('/myIP', methods=['GET', 'POST'])
 def myIP():
     #ip_user = request.cookies.get('ip_user')
     ip_user = session.get('ip_user')
+    login_form = LoginForm()
     params = {
         "ip_user":ip_user,
+        'login_form':login_form,
         "todos":todos,
         'check':check
     }

@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% import 'macros.html' as macros %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
 <html>
 <head>
     <title>
@@ -22,6 +25,11 @@
         </ul>
     
     {{ macros.init_msg(check) }}
+    <div class="container">
+        <form action="{{ url_for('myIP') }}" method="POST">
+            {{ wtf.quick_form(login_form) }}
+        </form>
+    </div>
     {% endblock %}
 
 </body>
