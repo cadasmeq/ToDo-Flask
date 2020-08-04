@@ -4,7 +4,6 @@ CREATE A VIRTUAL ENVIRONTMENT
 - venv\scripts\activate		-> activate venv (windows)
 - deactivate	-> deactivate duh
 
-
 INSTALL FLASK
 pip install flask
 pip freeze	-> show dependencies installed
