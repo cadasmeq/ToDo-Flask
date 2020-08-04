@@ -1,7 +1,9 @@
-from flask import Flask, request, redirect, make_response, render_template, session
 from flask_bootstrap import Bootstrap
+from flask import Flask, request, redirect, make_response, render_template, session, url_for
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, SubmitField, StringField
+from wtforms.validators import DataRequired
+from flask import flash
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -11,9 +13,9 @@ app.config['SECRET_KEY'] = "THIS_IS_THE_KEY"
 params = {}
 
 class LoginForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password')
-    submit = SubmitField('Enviar')
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    submit = SubmitField('enviar')
 
 
 @app.route("/") #home?
@@ -30,14 +32,25 @@ def home():
 @app.route('/myIP', methods=['GET', 'POST'])
 def myIP():
     #ip_user = request.cookies.get('ip_user')
-    ip_user = session.get('ip_user')
     login_form = LoginForm()
+    ip_user = session.get('ip_user')
+    username = session.get('username')
+
     params = {
         "ip_user":ip_user,
         'login_form':login_form,
         "todos":todos,
-        'check':check
+        'check':check,
+        'username':username,
     }
+
+    if login_form.validate_on_submit():
+        username = login_form.username.data
+        session['username'] = username
+
+        flash("Usuario registrado con exito.")
+
+        return redirect(url_for('home'))
     
     return render_template('myip.html', **params)
 
