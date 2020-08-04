@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% import 'macros.html' as macros %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
 <html>
 <head>
     <title>
@@ -12,6 +15,9 @@
 </head>
 <body>
     {% block content %}
+        {% if username %}
+            <p>Welcome: #{{ username | capitalize }}</pe>
+        {% endif %}
         
         <h2>Tu Dirección IP es: {{ ip_user }}</h2>
         <h2>To Do:</h2>
@@ -21,7 +27,24 @@
             {% endfor %}
         </ul>
     
+    {% block scripts %}
+    {{ super() }}
+    {% endblock %} 
+
     {{ macros.init_msg(check) }}
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dissmisible">
+            {{ message }}
+            <button class="close" type="button" data-dismiss="alert">&times;</button>
+        </div>
+        {% endfor %}
+        <form action="{{ url_for('myIP') }}" method="POST">
+            {{ wtf.quick_form(login_form) }}
+        </form>
+    
+    </div>
+
     {% endblock %}
 
 </body>

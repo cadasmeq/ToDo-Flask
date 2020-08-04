@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">   <!-- necessary for navbar -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 {% endblock %}
-
-{% block body %}     
+ 
+{% block body %}
     {% include 'navbar.html'%}
-    {% block content %}
-    {% endblock %}
+
+    {% block content %}    {% endblock %}
 
     {% block footer %}
         {% include 'footer.html' %}
