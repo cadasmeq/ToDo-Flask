@@ -1,3 +1,0 @@
-¿Que es un request y un response?
-
-Request y Response, son dos conceptos básicos en desarrollo web. HTTP se basa en un modelo de solicitud (request) y respuesta (response). De modo que que hay dos tipos de mensajes HTTP. EL navegador abre la conexión a un servidor y realiza una solicitud. El servidor procesa la solicitud del cliente y devuelve una respuesta.

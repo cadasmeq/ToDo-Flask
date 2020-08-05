@@ -1,28 +1,18 @@
-from flask_bootstrap import Bootstrap
-from flask import Flask, request, redirect, make_response, render_template, session, url_for
-from flask_wtf import FlaskForm
-from wtforms import PasswordField, SubmitField, StringField
-from wtforms.validators import DataRequired
-from flask import flash
+from flask import Flask, request, redirect, make_response, render_template, session, url_for, flash
+from app import create_app
 import unittest
+from app.forms import LoginForm
 
-app = Flask(__name__)
-bootstrap = Bootstrap(app)
+app = create_app()
+
+params = {}
 check = True
 todos = ["Limpiar la mesa", "Hacer ejercicio", "Leer un libro"]
-app.config['SECRET_KEY'] = "THIS_IS_THE_KEY"
-params = {}
 
 @app.cli.command()
 def test():
     tests = unittest.TestLoader().discover('test')
     unittest.TextTestRunner().run(tests)
-
-class LoginForm(FlaskForm):
-    username = StringField('username', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired()])
-    submit = SubmitField('enviar')
-
 
 @app.route("/") #home?
 def home():
@@ -34,7 +24,6 @@ def home():
 
     return response
     
-
 @app.route('/myIP', methods=['GET', 'POST'])
 def myIP():
     #ip_user = request.cookies.get('ip_user')

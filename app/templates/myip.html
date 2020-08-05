@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+    {{ super() }}
+    My IPs
+{% endblock %}
+
+{% block content %}
+
+    {% if username %}
+        <h1>Welcome: #{{ username | capitalize }}</h1>
+    {% endif %}
+    
+    <p>Tu Dirección IP es: {{ ip_user }}</p>
+
+    <div class="container">
+        
+        {{ wtf.quick_form(login_form) }}
+
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dissmisible">
+            {{ message }} {{ macros.init_msg(check) }}
+            <button class="close" type="button" data-dismiss="alert">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>To Do:</h2>
+    <ul>
+        {% for todo in todos %}
+        {{ macros.render_todos(todo) }}
+        {% endfor %}
+    </ul>
+
+    {% block scripts %}
+    {{ super() }}
+    {% endblock %} 
+
+{% endblock %}
+
+
+<!--
+    - se crea archivo base.htrml que contendrá información por defecto del sitio.
+    - Se extiende la base.html a myip.html.
+    # Extender parece ser una manera de incorporar información preliminar a un template.
+    - Se extinde base.html a myip.html.
+    - Se generan blockes para <title> personalizado.
+    - se mueve css a plantilla base.html.
+    - Se crean Macros y se mueven algunas funcionalidades a este .html
+-->
