@@ -15,7 +15,7 @@
 </head>
 <body>
     {% block content %}
-        {% if username %}
+        {% if username %}z
             <p>Welcome: #{{ username | capitalize }}</pe>
         {% endif %}
         
@@ -33,17 +33,14 @@
 
     {{ macros.init_msg(check) }}
     <div class="container">
-        {% for message in get_flashed_messages() %}
-        <div class="alert alert-success alert-dissmisible">
-            {{ message }}
-            <button class="close" type="button" data-dismiss="alert">&times;</button>
-        </div>
-        {% endfor %}
-        <form action="{{ url_for('myIP') }}" method="POST">
-            {{ wtf.quick_form(login_form) }}
-        </form>
-    
+        {{ wtf.quick_form(login_form) }}
     </div>
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dissmisible">
+        {{ message }}
+        <button class="close" type="button" data-dismiss="alert">&times;</button>
+    </div>
+    {% endfor %}
 
     {% endblock %}
 

@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from flask import flash
+import unittest
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -11,6 +12,11 @@ check = True
 todos = ["Limpiar la mesa", "Hacer ejercicio", "Leer un libro"]
 app.config['SECRET_KEY'] = "THIS_IS_THE_KEY"
 params = {}
+
+@app.cli.command()
+def test():
+    tests = unittest.TestLoader().discover('test')
+    unittest.TextTestRunner().run(tests)
 
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
@@ -47,7 +53,6 @@ def myIP():
     if login_form.validate_on_submit():
         username = login_form.username.data
         session['username'] = username
-
         flash("Usuario registrado con exito.")
 
         return redirect(url_for('home'))
