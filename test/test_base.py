@@ -33,4 +33,16 @@ class MainTest(TestCase):
 
         #import pdb; pdb.set_trace()
         self.assertRedirects(response, url_for('home'))
+    
+    def test_auth_blueprint_exists(self):
+        self.assertIn('auth', self.app.blueprints)
+    
+    def test_auth_login_get(self):
+        response = self.client.get(url_for('auth.login'))
+        self.assert200(response)
+
+    def test_auth_login_get(self):
+            self.client.get(url_for('auth.login'))
+            self.assertTemplateUsed('login.html')
+
 
