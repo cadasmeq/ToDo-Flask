@@ -350,5 +350,39 @@ which gcloud			-> check gcloud is installed
 gcloud init				-> init gcloud in folder
 gcloud auth login		-> autorize gcloud to access the cloud plataform with google user credentials
 gcloud auth application-default login	-> manage your active app default credentials
+gcloud config list		-> check config
+gcloud config set project <project>
 
 # FIRESTORE
+requeriments.txt -> firebase-admin
+pip3 install -r requeriments.txt
+
+/app/firebase_service.py
+
+#firebase_service.py
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+credentials = credentials.applicationDefault()		# initializing credentials
+firebase_admin.initialize_app(credential)			# initialize app with credentiales
+
+db = firestore.client()		#firestore.client returns current db from default application gcloud.
+
+def get_users():
+	return db.collection('users).get()	-> from db, get collection named users.
+
+def get_todos(user_id):
+	return db.collection('users).document(user_id).collection("todos").get()	-> from db, get collection todos where name's document is <user_id> from collection users.
+
+
+# Debugging firebase querys
+main.py
+from app.firebase_service import get_users
+
+users = get_users()		-> return iterable users firestore snapshot
+for user in users:
+	print(user.id)		-> get id of the query
+	print(user.to_dict()["description"]) 	-> convert to a dict, dand get description value from document.
+
+ 

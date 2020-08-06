@@ -1,7 +1,8 @@
 from flask import Flask, request, redirect, make_response, render_template, session, url_for, flash
-from app import create_app
 import unittest
+from app import create_app
 from app.forms import LoginForm
+from app.firestore_service import get_users, get_todos
 
 app = create_app()
 
@@ -31,9 +32,14 @@ def welcome():
 
     params = {
         "ip_user":ip_user,
-        "todos":todos,
+        "todos": get_todos(username),
         'username':username,
     }
+
+    users = get_users()
+    for user in users:
+        print(user.id)
+        print(user.to_dict())
 
     return render_template('welcome.html', **params)
 

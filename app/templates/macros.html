@@ -1,5 +1,5 @@
 {% macro render_todos(todo) %}
-    <li> {{ todo }} </li>
+    <li> Descripción: {{ todo.to_dict().description }} </li>
 {% endmacro %}
 
 
