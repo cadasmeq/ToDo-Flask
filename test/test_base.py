@@ -17,23 +17,22 @@ class MainTest(TestCase):
         
     def test_index_redirects(self):
         response = self.client.get(url_for('home'))
-        self.assertRedirects(response, url_for('myIP'))
+        self.assertRedirects(response, url_for('welcome'))
     
-    def test_myip_get(self):
-        response = self.client.get(url_for('myIP'))
+    def test_welcome_get(self):
+        response = self.client.get(url_for('welcome'))
         self.assert200(response)
     
-    def test_myip_post(self):
+    def test_welcome_post(self):
         fake_form = {
             'username': 'fake',
             'password': 'fake_password',
         }
         
-        response = self.client.post(url_for('myIP'), data=fake_form)
+        response = self.client.post(url_for('welcome'), data=fake_form)
+        self.assertTrue(response.status_code, 405)
 
-        #import pdb; pdb.set_trace()
-        self.assertRedirects(response, url_for('home'))
-    
+
     def test_auth_blueprint_exists(self):
         self.assertIn('auth', self.app.blueprints)
     
@@ -42,7 +41,15 @@ class MainTest(TestCase):
         self.assert200(response)
 
     def test_auth_login_get(self):
-            self.client.get(url_for('auth.login'))
-            self.assertTemplateUsed('login.html')
+        self.client.get(url_for('auth.login'))
+        self.assertTemplateUsed('login.html')
+
+    def test_auth_login_post(self):
+        fake_form = {
+                'username': 'fake_user',
+                'password': 'fake_pass'
+        }
+        response = self.client.post(url_for('auth.login'), data=fake_form)
+        self.assertRedirects(response, url_for('home'))
 
 

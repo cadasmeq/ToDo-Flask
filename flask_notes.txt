@@ -260,4 +260,95 @@ class MainTest(TestCase):
 					}
 		response = self.client.post(url_for('hello'), data=fake_form)
 		self.assertRedirects(response, url_for('home'))
-		
+	
+
+# APPLICATION FACTORY
+The idea is to set up the APP in a function.
+
+/app/__init__.py
+/app/config.py
+/main.py
+
+## __init__.py
+
+from flask import FLask
+from flask_bootstrap import Bootstrap
+
+def create_app(config):
+	app = Flask(__name__)
+	app.config.from_object(config)	-> if is a class object
+	app.config.from_pyfile(config)	-> if is a python file
+	return app
+
+## config.py
+
+class Config:
+    SECRET_KEY = 'SUPER SECRET'
+
+## main.py
+
+from app import create_app
+
+app = create_app()
+
+
+# Blueprints
+Flask uses a concept of blueprints for making applications components. Blueprints can greatly simplify how large applications works.
+A Blueprint object works similarly to a Flask app but is not actually an application.
+
+The basic concept of blueprints is that they record operations to execute when registered on an applications. Flask associates view
+functions with blueprints when dispatching request a generating URLs from one endpoint to another.
+
+To start a blueprint you must initialize it, and register it in the app.
+
+
+# to create a blueprint you have to create a new python package
+e.i:
+
+/
+-- auth
+	-- __init__.py
+	-- views.py
+
+## __init.py__
+from flask import Blueprint
+
+auth = Blueprint('auth', 			-> blueprint's name
+				__name__,			-> importation's name
+				url_prefix="/auth")	-> prefijo de la redirección
+
+from . import views
+
+## views.py
+from . import auth
+from app.forms import Form()
+@auth.route('/login', methos=['GET', 'POST'])
+def login():
+	formulario = Form()
+	context = {
+		'login_form'=formulario
+	}
+
+	if login_form.validate_on_submit():
+		username = login_form.username.data
+		session['username'] = username
+		flash("Welcome!")
+		return redirect(url_for(postlogin.html))
+
+	return render_template('login.html', **context)
+
+
+# GOOGLE PLATAFORM SDK
+## Account and DB
+1.- create account
+2.- create project
+3.- create new firestore db 
+4.- create a collection a fill it with data
+
+## Install SDK using quick guide
+which gcloud			-> check gcloud is installed
+gcloud init				-> init gcloud in folder
+gcloud auth login		-> autorize gcloud to access the cloud plataform with google user credentials
+gcloud auth application-default login	-> manage your active app default credentials
+
+# FIRESTORE

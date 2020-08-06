@@ -4,38 +4,34 @@
 
 {% block title %}
     {{ super() }}
-    My IPs
+    My Board!
 {% endblock %}
 
 {% block content %}
 
-    {% if username %}
-        <h1>Welcome: #{{ username | capitalize }}</h1>
-    {% endif %}
-    
-    <p>Tu Dirección IP es: {{ ip_user }}</p>
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dissmisible">
+        {{ message }}
+        <button class="close" type="button" data-dismiss="alert">&times;</button>
+    </div>
+    {% endfor %}
 
     <div class="container">
-        
-        {{ wtf.quick_form(login_form) }}
+        {% if username %}
+            <h1>Welcome: #{{ username | capitalize }}</h1>
+        {% endif %}
 
-        {% for message in get_flashed_messages() %}
-        <div class="alert alert-success alert-dissmisible">
-            {{ message }} {{ macros.init_msg(check) }}
-            <button class="close" type="button" data-dismiss="alert">&times;</button>
-        </div>
-        {% endfor %}
+
+        <h2>To Do:</h2>
+        <ul>
+            {% for todo in todos %}
+            {{ macros.render_todos(todo) }}
+            {% endfor %}
+        </ul>
     </div>
 
-    <h2>To Do:</h2>
-    <ul>
-        {% for todo in todos %}
-        {{ macros.render_todos(todo) }}
-        {% endfor %}
-    </ul>
-
     {% block scripts %}
-    {{ super() }}
+        {{ super() }}
     {% endblock %} 
 
 {% endblock %}
