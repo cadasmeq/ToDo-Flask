@@ -1,0 +1,456 @@
+CREATE A VIRTUAL ENVIRONTMENT
+- virtualenv venv --python=python3.7	-> create a virtual env
+- source venv/bin/activate	-> activate venv (linux)
+- venv\scripts\activate		-> activate venv (windows)
+- deactivate	-> deactivate duh
+
+INSTALL FLASK
+pip install flask
+pip freeze	-> show dependencies installed
+
+
+TO RUN APP MUST TURN ON THE SERVER
+export FLASK_APP=<file.py>		-> set app file
+export FLASK_DEBUG=1			-> enable debugging 
+export FLASK_ENV=environtment		-> set environtment to "environment"
+flask run
+
+
+TEMPLATES OF FLASK USE JINJA2 FRAMEWORK
+/templates				-> default path
+
+
+CONTROL STRUCTURES
+{% if <var> %}
+{% else %}
+{% endif %}
+
+
+BLOCKS 
+{% block <id> %}			-> open a block
+{% endblock %}				-> end the block
+
+
+MACROS
+{% macro <name>(function_param) %}	-> init a macro named <name> that accept a parameter
+{% endmacro %}				-> end the macro
+
+{% import <macros_file.html> as macros %}	-> import macros file
+{{ macros.<name>(param }}			-> using macro
+
+
+CREATE APP_ROUTES			
+@app.route(path)			-> define <path> ("./" i.e.) as a route using decorator. 
+def path_function():
+	...
+
+
+ERROR HANDLING				
+@app.error("404.html")			-> define the file template for error 404.
+def 404_handler(error):
+	return ....
+	
+
+IMPORTING IMAGES
+/static/images/<image.png>		-> generate a default images container.
+{{ for_url('static', filename="images/<image>.png" }}	-> load image from path.
+
+
+INCLUDING CODE
+navbar.html				-> generate a html file that contains... html.
+{% include <navbar.html> %}		-> include navbar.html content to.
+
+
+EXTENDS TEMPLATES
+(!) Extend a template means how Jinja works with template inheritance (herencias).
+<layout.html>				-> file that contain the skeleton template.
+{% extends 'layout.html' %}		-> extends layout.html in a children template.
+
+(!) If layout and children template have the same tag, i.e. <title> and you want to use both elements,
+is necessary to call the super() function of fathers template.
+
+<title> D4C | </title>			-> layout title.
+
+<title> 
+	{% block title %}
+	{{ super() }}
+	Welcome
+	{% endblock %}
+</title>
+
+Result: <title> D4C | Welcome </title>
+
+
+APP MANANGMENT AND FUNCTIONS
+from flask import Flask
+app = Flask(__name__)			-> initialize app class Flask with file's name.
+
+from flask import make_response, redirect, request, session, render_temaplte
+
+(!) make_response: class to generate response to client
+(!) redirect: class to redirct client into a route.
+(!) request: class to get information from te client request.
+(!) session: Class to manipulated cookies in a safer way (encrypted)
+(!) render_template: This method allows render a template passing the template and params
+
+
+FLASK BOOTSTRAP
+pip install flask-bootstrap		-> install flask-bootstrap
+
+(!) Must be initialized in main app file.
+from flask_bootstrap import Bootstrap	-> import class Bootstrap
+bootstrap = Bootstrap(app)		-> Pass the app to Bootstrap Class.
+
+(!) Extending bootstrap to rest of templates.
+{% extends 'bootstrap/base.html' %}	-> extending base.html in <layout.html> i.e.
+
+FLASK FORMS WITH WTF (WHAT THE FORMS)
+pip install flask-wtf			-> installing wtf
+
+(!) Defining a Login_form with WTF
+from flask_wtf import FlaskForm		-> imporing class to use our classes
+from wtforms import StringField, PasswordField, Submitfield	-> importing form's fields.
+from wtforms.validators import DataRequired			-> imporing a data validator.
+
+Class LoginForm(FlaskFOrm):
+	username = StringField("User", validators=[DataRequired()])
+	password = PasswordField("Password", validators=[DataRequired()])
+	submit   = SubmitField("Enviar")
+
+
+(!) Declaring and using login_form
+login_form = LoginForm()
+
+{{ login_form.username }}
+{{ login_form.label }}
+
+(!) Declaring the same form using wtf
+login_form = LoginForm()			-> initializing class
+{% import 'bootstrap/wtf.hml' as wtf %}		-> imporing wtf.hml as wtf
+{{ wtf.quick_form(login_form) }}		-> using quick_form from wtf to generate the login_form
+
+example:
+<div class="container">
+	<form action="{{ url_for('home') }}" method="POST">
+		{{ wtf.quick_form(login_form )}}
+	</form>
+</div>
+
+note: this must give an error because by default flask use GET, must be specified in app file POST method.
+
+@app.route('myip', methods=['GET', 'POST'])	-> by default route use GET Method.
+def 'function'():
+	...
+	context = {
+		...
+	}
+	if login_form.validate_on_submit():
+		username = login_form.username.data
+		session['username'] = username
+
+		return redirect(url_for('home'))
+
+	return render_template('site.html', **context)
+
+
+---> site.html
+<body>
+	{% if username %}
+		<h1> welcome: {{ username }} </h1>
+	{% endif %}
+</body>
+
+Note 2: Also you can use filters to capitalize username text.
+<h1> welcome: {{ username | capitalize }} </h1>
+
+
+# FLASHES FLASK: EMERGENT MESSAGES
+from flask import flash
+
+@app.route('myip', methods=['GET', 'POST'])
+def 'function'():
+	...
+	context = {
+		...
+	}
+	if login_form.validate_on_submit():
+		username = login_form.username.data
+		session['username'] = username
+
+		flash = "¡Usuario registrado con exito!."	-> adding flash
+		return redirect(url_for('home'))
+
+
+	return render_template('site.html', **context)
+
+--> base.html		-> must be in base.html because we want flash shows in each template.
+Note: Next code is the simplest way to create an bootstrap alert.
+
+{% for message in get_flashed_message %}
+	<div class="alert alert-success alert-dismissible">
+		<button type="button" data-dismiss="alert" class="close">
+			&times; 
+			{{ message }}
+		</button>
+	</div>
+{% endfor %}
+
+Note 2: At this point, we can't close our alert because we didnt load our JS code from bootstrap.
+
+{% block content %}
+	{% block scripts %}
+	{{ super() }}		-> brings JS from father's class.
+	{% endblock %}
+{% endblock %}
+
+
+# BASIC TESTING WITH FLASK TESTING
+/requeriments.txt -> (+) flask-testing
+pip install -r requeriments.txt
+
+--> main.py
+
+import unittest
+
+@app.cli.command():
+	def test():
+		tests = unitttest.TestLoader().discover('test')
+		unittest.TextTestRunner().run(tests)
+
+>$ mkdir "./test
+>$ export FLASK_APP=main.py
+>$ flask test
+
+> 0 Tests.			-> must show 0 running test.
+
+touch ./test/test_base.py
+from flask_testing import TestCase
+from main import app
+from flask import current_app, url_for
+
+class MainTest(TestCase):
+	def create_app(self):		-> Method must return an app flask when we want to test.
+		app.config['TESTING']= True				-> check if environtment is testing.
+		app.config['wtf_csrf_enabled]=False		-> Disable the use of csrf_token in wt forms.
+
+		return app
+	
+	def test_app_exits(self):
+		self.assertIsNotNone(current_app)
+		# self.assertIsNone(current_app)
+
+>$ flask test
+> 1 Test runned.
+
+	def test_app_in_test_mode(self):
+		self.assertTrue(current_app.config['TESTING'])
+
+	def test_index_redirects(self):
+		response = self.client.get(url_for('home'))
+		self.assertRedirects(response, url_for('myip'))
+	
+	def test_hello_get(self):
+		response = self.client.get(url_for('home'))
+		self.assert200(response)
+	
+	def test_hello_post(self):
+		fake_form = {
+						'username': 'fake',
+						'password': 'fake_password'
+					}
+		response = self.client.post(url_for('hello'), data=fake_form)
+		self.assertRedirects(response, url_for('home'))
+	
+
+# APPLICATION FACTORY
+The idea is to set up the APP in a function.
+
+/app/__init__.py
+/app/config.py
+/main.py
+
+## __init__.py
+
+from flask import FLask
+from flask_bootstrap import Bootstrap
+
+def create_app(config):
+	app = Flask(__name__)
+	app.config.from_object(config)	-> if is a class object
+	app.config.from_pyfile(config)	-> if is a python file
+	return app
+
+## config.py
+
+class Config:
+    SECRET_KEY = 'SUPER SECRET'
+
+## main.py
+
+from app import create_app
+
+app = create_app()
+
+
+# Blueprints
+Flask uses a concept of blueprints for making applications components. Blueprints can greatly simplify how large applications works.
+A Blueprint object works similarly to a Flask app but is not actually an application.
+
+The basic concept of blueprints is that they record operations to execute when registered on an applications. Flask associates view
+functions with blueprints when dispatching request a generating URLs from one endpoint to another.
+
+To start a blueprint you must initialize it, and register it in the app.
+
+
+# to create a blueprint you have to create a new python package
+e.i:
+
+/
+-- auth
+	-- __init__.py
+	-- views.py
+
+## __init.py__
+from flask import Blueprint
+
+auth = Blueprint('auth', 			-> blueprint's name
+				__name__,			-> importation's name
+				url_prefix="/auth")	-> prefijo de la redirección
+
+from . import views
+
+## views.py
+from . import auth
+from app.forms import Form()
+@auth.route('/login', methos=['GET', 'POST'])
+def login():
+	formulario = Form()
+	context = {
+		'login_form'=formulario
+	}
+
+	if login_form.validate_on_submit():
+		username = login_form.username.data
+		session['username'] = username
+		flash("Welcome!")
+		return redirect(url_for(postlogin.html))
+
+	return render_template('login.html', **context)
+
+
+# GOOGLE PLATAFORM SDK
+## Account and DB
+1.- create account
+2.- create project
+3.- create new firestore db 
+4.- create a collection a fill it with data
+
+## Install SDK using quick guide
+which gcloud			-> check gcloud is installed
+gcloud init				-> init gcloud in folder
+gcloud auth login		-> autorize gcloud to access the cloud plataform with google user credentials
+gcloud auth application-default login	-> manage your active app default credentials
+gcloud config list		-> check config
+gcloud config set project <project>
+
+# FIRESTORE
+requeriments.txt -> firebase-admin
+pip3 install -r requeriments.txt
+
+/app/firebase_service.py
+
+#firebase_service.py
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+credentials = credentials.applicationDefault()		# initializing credentials
+firebase_admin.initialize_app(credential)			# initialize app with credentiales
+
+db = firestore.client()		#firestore.client returns current db from default application gcloud.
+
+def get_users():
+	return db.collection('users).get()	-> from db, get collection named users.
+
+def get_todos(user_id):
+	return db.collection('users).document(user_id).collection("todos").get()	-> from db, get collection todos where name's document is <user_id> from collection users.
+
+
+# Debugging firebase querys
+main.py
+from app.firebase_service import get_users
+
+users = get_users()		-> return iterable users firestore snapshot
+for user in users:
+	print(user.id)		-> get id of the query
+	print(user.to_dict()["description"]) 	-> convert to a dict, dand get description value from document.
+
+# Flask Login:
+Store the active user’s ID in the session
+Let you restrict views to logged-in (or logged-out) users.
+Possibly integrate with Flask-Principal or other authorization extensions later on.
+
+How it works?:
+You will need to provide a user_loader callback. 
+This callback is used to reload the user object from the user ID stored in the session. 
+It should take the unicode ID of a user, and return the corresponding user object.
+
+Your User Class
+The class that you use to represent users needs to implement these properties and methods:
+is_authenticated, is_active, is_anonymous, get_id()
+
+
+1- Install 'flask-login'
+2- initialize login manager in app.
+3- define user model class
+
+
+ requeriments.txt -> flask-login
+ pip3 install -r requeriments.txt
+
+ /app/__init__.py
+ from flask_login import LoginManager
+
+ login_manager = LoginManager()
+ login_manager.login_view = 'auth.login'
+
+ def create_app()
+		...
+		login_manager.init_app(app)
+
+As was setted login view as 'auth.login' is necessary to protect/block routes with decorator
+login_required
+
+
+# main.py
+from flask_login import login_required
+
+@route("/hello")
+@login_required
+def hello():
+	...
+
+/app/models.py
+from flask_login import UserMinxin		-> contain classes required for user_loader
+
+class UserData:
+	def __init__(self, username, password):
+        self.username =  username,
+        self.password  = password
+
+Class userModel(UserMinxin):
+	def __init__(self, user_data):
+		self.id = user_data.username
+		self.password = user_data.password
+	
+	@stathic method
+	def query(user_id):
+		user_doc = get_user(user_id)
+		user_data = UserData(
+			username = user_doc.id,
+			password = user_doc.to_dictionary()['password']
+		)
+
+ 
+
+ 

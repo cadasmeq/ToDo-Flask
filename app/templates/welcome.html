@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% import 'macros.html' as macros %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block title %}
+    {{ super() }}
+    My Board!
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        {% if username %}
+            <h1>Welcome: #{{ username | capitalize }}</h1>
+        {% endif %}
+
+        <h2>To Do:</h2>
+        <div class="container", id="main-todo">
+                {% for todo in todos %}
+                    {{ macros.render_todos(todo, update, delete) }}     
+                {% endfor %}
+            {{ wtf.quick_form(todo_form)}}
+        </div>
+    </div>
+
+    {% block scripts %}
+        {{ super() }}
+    {% endblock %} 
+
+{% endblock %}
