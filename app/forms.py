@@ -9,6 +9,6 @@ class LoginForm(FlaskForm):
 
 class SignUpForm(FlaskForm):
     username    = StringField("Username", validators=[DataRequired()])
-    password    = PasswordField("Username", [DataRequired()])
-    re_password = PasswordField("Repeat Username", [DataRequired()])
+    password    = PasswordField("Password", [DataRequired()])
+    re_password = PasswordField("Repeat Password", [DataRequired()])
     submit      = SubmitField("Sign Up")  
