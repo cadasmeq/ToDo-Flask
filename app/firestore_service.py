@@ -13,10 +13,9 @@ def get_users():
 def get_user(user_id):
     return db.collection('users').document(user_id).get()
 
-
 def get_todos(user_id):
-
     return db.collection('users').document(user_id).collection('todos').get()
+
 def put_user(user_data):
     user_ref = db.collection('users').document(user_data.username)
     user_ref.set({'password':user_data.password})
@@ -29,3 +28,7 @@ def put_init_todo(defaul_todo):
     todo_ref = db.collection('users').document(defaul_todo.user_id).collection('todos')
     todo_ref.add({'description': defaul_todo.description,
                   'status':defaul_todo.status,})
+
+def delete_todo(user_id, todo_id):
+    todo_ref = db.collection('users').document(user_id).collection('todos').document(todo_id)
+    todo_ref.delete()

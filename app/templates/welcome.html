@@ -16,20 +16,17 @@
         {% endif %}
 
         <h2>To Do:</h2>
-        <div id="main-todo">
-            <ul class="list-group">
+        <div class="container", id="main-todo">
                 {% for todo in todos %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ macros.render_todos(todo) }}
-                        {{ macros.todo_status(todo) }}
-                    </li>     
+                    {{ macros.render_todos(todo, update, delete) }}     
                 {% endfor %}
-            </ul>
-
-            {{ wtf.quick_form(add_todo)}}
-
+            {{ wtf.quick_form(todo_form)}}
         </div>
     </div>
+
+    {% block scripts %}
+        {{ super() }}
+    {% endblock %} 
 
 {% endblock %}
 

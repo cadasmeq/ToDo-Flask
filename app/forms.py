@@ -14,8 +14,11 @@ class SignUpForm(FlaskForm):
     submit      = SubmitField("Sign Up")
 
 class TodoForm(FlaskForm):
-    description = StringField("Agregar Todo",  validators=[DataRequired()], render_kw={"placeholder": "New To Do"})
+    description = StringField("",  validators=[DataRequired()], render_kw={"placeholder": "New To Do"})
     submit = SubmitField("Add")
 
-class EditToDoForm(FlaskForm):
-    delete = SubmitField("Delete", validators=[DataRequired()])
+class DeleteForm(FlaskForm):
+    delete = SubmitField("Delete")
+
+class UpdateForm(FlaskForm):
+    edit = SubmitField("Update")
