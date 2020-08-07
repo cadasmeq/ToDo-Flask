@@ -1,11 +1,16 @@
 from flask_login import UserMixin
 from .firestore_service import get_user
 
+class DefaultTodo:
+    def __init__(self, user_id):
+        self.user_id =  user_id
+        self.description  = '¡Bienvenido!, ¡Este es tu primer todo!'
+        self.status  = False
+
 class UserData:
     def __init__(self, username, password):
         self.username =  username
         self.password  = password
-
 
 class UserModel(UserMixin):
     def __init__(self, user_data):
@@ -22,3 +27,4 @@ class UserModel(UserMixin):
             password=user_doc.to_dict()['password']
         )
         return UserModel(user_data)
+    

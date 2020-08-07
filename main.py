@@ -3,9 +3,8 @@ from flask import Flask, request, redirect, make_response, render_template, sess
 from flask_login import login_required, current_user
 
 from app import create_app
-from app.forms import LoginForm
-from app.firestore_service import get_users, get_todos
-
+from app.forms import LoginForm, TodoForm, EditToDoForm
+from app.firestore_service import get_users, get_todos, put_todo
 
 app = create_app()
 
@@ -32,16 +31,26 @@ def home():
 
     return response
 
-@app.route('/welcome')
+@app.route('/welcome', methods=['GET', 'POST'])
 @login_required
 def welcome():
     ip_user = session.get('ip_user')
     username = current_user.id
-
+    
+    todo_form = TodoForm()
+ 
     params = {
         "ip_user":ip_user,
         "todos": get_todos(username),
         'username':username,
+        'add_todo':todo_form,
     }
+        
+    if todo_form.validate_on_submit():
+
+        put_todo(user_id=username, description=todo_form.description.data)
+        flash("Todo Added.")
+        return redirect(url_for("welcome"))
+
 
     return render_template('welcome.html', **params)

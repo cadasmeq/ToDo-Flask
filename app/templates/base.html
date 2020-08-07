@@ -2,7 +2,7 @@
   
 {% block head %}
     <title>
-        {% block title %}    N.[ai].ve |  {% endblock %}
+        {% block title %}    Naive |  {% endblock %}
     </title>  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">   <!-- necessary for navbar -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
@@ -11,6 +11,17 @@
 {% block body %}
     {% include 'navbar.html'%}
 
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dissmisible">
+        {{ message }}
+        <button class="close" type="button" data-dismiss="alert">&times;</button>
+    </div>
+    {% endfor %}
+
     {% block content %}{% endblock %}
+    
+    {% block scripts %}
+    {{ super() }}
+    {% endblock %} 
 
 {% endblock %}

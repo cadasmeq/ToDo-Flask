@@ -2,6 +2,7 @@
 {% import 'macros.html' as macros %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+
 {% block title %}
     {{ super() }}
     My Board!
@@ -9,30 +10,26 @@
 
 {% block content %}
 
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-success alert-dissmisible">
-        {{ message }}
-        <button class="close" type="button" data-dismiss="alert">&times;</button>
-    </div>
-    {% endfor %}
-
     <div class="container">
         {% if username %}
             <h1>Welcome: #{{ username | capitalize }}</h1>
         {% endif %}
 
-
         <h2>To Do:</h2>
-        <ul>
-            {% for todo in todos %}
-            {{ macros.render_todos(todo) }}
-            {% endfor %}
-        </ul>
-    </div>
+        <div id="main-todo">
+            <ul class="list-group">
+                {% for todo in todos %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ macros.render_todos(todo) }}
+                        {{ macros.todo_status(todo) }}
+                    </li>     
+                {% endfor %}
+            </ul>
 
-    {% block scripts %}
-        {{ super() }}
-    {% endblock %} 
+            {{ wtf.quick_form(add_todo)}}
+
+        </div>
+    </div>
 
 {% endblock %}
 

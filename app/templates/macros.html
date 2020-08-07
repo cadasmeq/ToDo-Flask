@@ -1,3 +1,11 @@
 {% macro render_todos(todo) %}
-    <li> Descripción: {{ todo.to_dict().description }} </li>
+        {{ todo.to_dict().description }}
+{% endmacro %}
+
+{% macro todo_status(todo) %}
+    {% if todo.to_dict().status %}
+    <span class="badge badge-success">Finished</span>
+    {% else %}
+    <span class="badge badge-primary badge-pill"> Pending</span>
+    {% endif %}
 {% endmacro %}

@@ -11,4 +11,11 @@ class SignUpForm(FlaskForm):
     username    = StringField("Username", validators=[DataRequired()])
     password    = PasswordField("Password", [DataRequired()])
     re_password = PasswordField("Repeat Password", [DataRequired()])
-    submit      = SubmitField("Sign Up")  
+    submit      = SubmitField("Sign Up")
+
+class TodoForm(FlaskForm):
+    description = StringField("Agregar Todo",  validators=[DataRequired()], render_kw={"placeholder": "New To Do"})
+    submit = SubmitField("Add")
+
+class EditToDoForm(FlaskForm):
+    delete = SubmitField("Delete", validators=[DataRequired()])

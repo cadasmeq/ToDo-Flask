@@ -4,8 +4,8 @@ from flask import render_template, session, flash, redirect, url_for
 
 from . import auth
 from app.forms import LoginForm, SignUpForm
-from app.firestore_service import get_user, put_user
-from app.models import UserModel, UserData
+from app.firestore_service import get_user, put_user, put_init_todo
+from app.models import UserModel, UserData, DefaultTodo
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -59,6 +59,8 @@ def signup():
                 hash_password =  generate_password_hash(password)
                 user_data = UserData(username, hash_password)
                 put_user(user_data)
+
+                put_init_todo(DefaultTodo(username))
 
                 user = UserModel(user_data)
                 login_user(user)
