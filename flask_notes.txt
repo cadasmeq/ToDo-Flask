@@ -385,4 +385,72 @@ for user in users:
 	print(user.id)		-> get id of the query
 	print(user.to_dict()["description"]) 	-> convert to a dict, dand get description value from document.
 
+# Flask Login:
+Store the active user’s ID in the session
+Let you restrict views to logged-in (or logged-out) users.
+Possibly integrate with Flask-Principal or other authorization extensions later on.
+
+How it works?:
+You will need to provide a user_loader callback. 
+This callback is used to reload the user object from the user ID stored in the session. 
+It should take the unicode ID of a user, and return the corresponding user object.
+
+Your User Class
+The class that you use to represent users needs to implement these properties and methods:
+is_authenticated, is_active, is_anonymous, get_id()
+
+
+1- Install 'flask-login'
+2- initialize login manager in app.
+3- define user model class
+
+
+ requeriments.txt -> flask-login
+ pip3 install -r requeriments.txt
+
+ /app/__init__.py
+ from flask_login import LoginManager
+
+ login_manager = LoginManager()
+ login_manager.login_view = 'auth.login'
+
+ def create_app()
+		...
+		login_manager.init_app(app)
+
+As was setted login view as 'auth.login' is necessary to protect/block routes with decorator
+login_required
+
+
+# main.py
+from flask_login import login_required
+
+@route("/hello")
+@login_required
+def hello():
+	...
+
+/app/models.py
+from flask_login import UserMinxin		-> contain classes required for user_loader
+
+class UserData:
+	def __init__(self, username, password):
+        self.username =  username,
+        self.password  = password
+
+Class userModel(UserMinxin):
+	def __init__(self, user_data):
+		self.id = user_data.username
+		self.password = user_data.password
+	
+	@stathic method
+	def query(user_id):
+		user_doc = get_user(user_id)
+		user_data = UserData(
+			username = user_doc.id,
+			password = user_doc.to_dictionary()['password']
+		)
+
+ 
+
  
