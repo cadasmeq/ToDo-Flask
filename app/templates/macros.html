@@ -12,7 +12,7 @@
             {% endif %}
 
             {{ wtf.quick_form(delete, action=url_for("delete", todo_id=todo.id)) }}
-            {{ wtf.quick_form(update) }}
+            {{ wtf.quick_form(update, action=url_for("update", todo_id=todo.id, status=todo.to_dict().status))  }}
         </li>
     </ul>
 {% endmacro %}

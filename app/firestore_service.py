@@ -22,7 +22,7 @@ def put_user(user_data):
 
 def put_todo(user_id, description):
     todo_ref = db.collection('users').document(user_id).collection('todos')
-    todo_ref.add({'description': description})
+    todo_ref.add({'description': description, 'status':False})
 
 def put_init_todo(defaul_todo):
     todo_ref = db.collection('users').document(defaul_todo.user_id).collection('todos')
@@ -30,5 +30,14 @@ def put_init_todo(defaul_todo):
                   'status':defaul_todo.status,})
 
 def delete_todo(user_id, todo_id):
-    todo_ref = db.collection('users').document(user_id).collection('todos').document(todo_id)
+    todo_ref = _get_todo_ref(user_id, todo_id)
     todo_ref.delete()
+
+def update_todo(user_id, todo_id, status):
+    todo_status = not bool(status)
+
+    todo_ref = _get_todo_ref(user_id, todo_id)
+    todo_ref.update({'status':todo_status})
+
+def _get_todo_ref(user_id, todo_id):
+    return db.document('users/{}/todos/{}'.format(user_id, todo_id))

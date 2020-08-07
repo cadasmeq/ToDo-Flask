@@ -21,4 +21,4 @@ class DeleteForm(FlaskForm):
     delete = SubmitField("Delete")
 
 class UpdateForm(FlaskForm):
-    edit = SubmitField("Update")
+    update = SubmitField("Update")

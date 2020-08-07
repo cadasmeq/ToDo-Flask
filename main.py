@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 
 from app import create_app
 from app.forms import TodoForm, DeleteForm, UpdateForm
-from app.firestore_service import get_users, get_todos, put_todo, delete_todo
+from app.firestore_service import get_users, get_todos, put_todo, delete_todo, update_todo
 
 app = create_app()
 
@@ -31,8 +31,7 @@ def home():
 
     return response
 
-
-@app.route('/welcome')
+@app.route('/welcome', methods=['GET', 'POST'])
 @login_required
 def welcome():
     ip_user = session.get('ip_user')
@@ -62,7 +61,12 @@ def welcome():
 def delete(todo_id):
     user_id = current_user.id
     delete_todo(user_id, todo_id)
-    flash("Deleted.")
+
     return redirect(url_for('welcome'))
 
+@app.route('/todos/update/<todo_id>/<int:status>', methods=['POST'])
+def update(todo_id, status):
+    user_id = current_user.id
+    update_todo(user_id, todo_id, status)
     
+    return redirect(url_for('welcome'))
