@@ -11,12 +11,8 @@
 {% block content %}
 
     <div class="container">
-        {% if username %}
-            <h1>Welcome: #{{ username | capitalize }}</h1>
-        {% endif %}
-
-        <h2>To Do:</h2>
-        <div class="container", id="main-todo">
+        <h3>Estos son tus recordatorios <span class="user-color">(@{{ current_user.id | capitalize }})</span>:</h3>
+        <div class="container">
                 {% for todo in todos %}
                     {{ macros.render_todos(todo, update, delete) }}     
                 {% endfor %}

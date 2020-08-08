@@ -3,22 +3,22 @@ from wtforms.validators import DataRequired
 from flask_wtf import FlaskForm
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
+    username = StringField('Usuario', validators=[DataRequired()])
+    password = PasswordField('Contraseña', validators=[DataRequired()])
+    submit = SubmitField('Ingresar')
 
 class SignUpForm(FlaskForm):
-    username    = StringField("Username", validators=[DataRequired()])
-    password    = PasswordField("Password", [DataRequired()])
-    re_password = PasswordField("Repeat Password", [DataRequired()])
-    submit      = SubmitField("Sign Up")
+    username    = StringField("Usuario", validators=[DataRequired()])
+    password    = PasswordField("Contraseña", [DataRequired()])
+    re_password = PasswordField("Repetir Contraseña", [DataRequired()])
+    submit      = SubmitField("Registrar")
 
 class TodoForm(FlaskForm):
-    description = StringField("",  validators=[DataRequired()], render_kw={"placeholder": "New To Do"})
-    submit = SubmitField("Add")
+    description = StringField("",  validators=[DataRequired()], render_kw={"placeholder": "Nuevo recordatorio."})
+    submit = SubmitField("Agregar")
 
 class DeleteForm(FlaskForm):
-    delete = SubmitField("Delete")
+    submit = SubmitField("Borrar")
 
 class UpdateForm(FlaskForm):
-    update = SubmitField("Update")
+    submit = SubmitField("Actualizar")

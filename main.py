@@ -26,14 +26,14 @@ def server_error(error):
 @app.route("/")
 def home():
     remote_ip = request.remote_addr
-    response = make_response(redirect("welcome"))
+    response = make_response(redirect("board"))
     session['ip_user'] = remote_ip
 
     return response
 
-@app.route('/welcome', methods=['GET', 'POST'])
+@app.route('/board', methods=['GET', 'POST'])
 @login_required
-def welcome():
+def board():
     ip_user = session.get('ip_user')
     username = current_user.id
     
@@ -52,21 +52,21 @@ def welcome():
         
     if todo_form.validate_on_submit():
         put_todo(user_id=username, description=todo_form.description.data)
-        flash("Todo Added.")
-        return redirect(url_for("welcome"))
+        flash("Agregado nuevo recordatorio.")
+        return redirect(url_for("board"))
 
-    return render_template('welcome.html', **params)
+    return render_template('board.html', **params)
 
 @app.route('/todos/delete/<todo_id>', methods=['POST'])
 def delete(todo_id):
     user_id = current_user.id
     delete_todo(user_id, todo_id)
 
-    return redirect(url_for('welcome'))
+    return redirect(url_for('board'))
 
 @app.route('/todos/update/<todo_id>/<int:status>', methods=['POST'])
 def update(todo_id, status):
     user_id = current_user.id
     update_todo(user_id, todo_id, status)
     
-    return redirect(url_for('welcome'))
+    return redirect(url_for('board'))

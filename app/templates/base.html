@@ -2,10 +2,11 @@
   
 {% block head %}
     <title>
-        {% block title %}    Naive |  {% endblock %}
+        {% block title %}    Remind |  {% endblock %}
     </title>  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">   <!-- necessary for navbar -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png')}}">
 {% endblock %}
  
 {% block body %}

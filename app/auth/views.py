@@ -28,9 +28,9 @@ def login():
                 user = UserModel(user_data)
                 login_user(user)
 
-                flash('Bienvenido de nuevo')
+                flash("Bienvenido de nuevo! {}".format(str(user.id).capitalize()))
 
-                redirect(url_for('welcome'))
+                redirect(url_for('board'))
             else:
                 flash('La información no coincide')
         else:
@@ -59,21 +59,16 @@ def signup():
                 hash_password =  generate_password_hash(password)
                 user_data = UserData(username, hash_password)
                 put_user(user_data)
-
                 put_init_todo(DefaultTodo(username))
-
                 user = UserModel(user_data)
                 login_user(user)
 
-                flash("Bienvenido")
-                return redirect(url_for('welcome'))
-
+                flash("Bienvenido a Remaind {}".format(str(user.id).capitalize()))
+                return redirect(url_for('board'))
             else:
-                flash("usuario existe.")      
-        
+                flash("usuario existe.")        
         else:
             flash("Contraseñas no coinciden.")
-
 
     return render_template("signup.html", **context)
 
@@ -82,6 +77,5 @@ def signup():
 @login_required
 def logout():
     logout_user()
-    flash("Ten un buen día!")
     return redirect(url_for("home"))
 
