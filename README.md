@@ -12,7 +12,11 @@ Before to start using it, you have to register your own user in the app followin
 # # Pre-requisites 📋
 All modules are listed in requirements.txt file which you should install before to run main.py.
 
-
-
 # # Final Comentary:
 This content is result of Flask course by Platzi which its main focus is study Flask as a web framework.
+
+# # Preview
+<p float="left">
+ <img src="flask preview.gif" />
+</p>
+
